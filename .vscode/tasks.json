@@ -1,0 +1,27 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "1. cmake",
+            "type": "shell",
+            "command": "./cmake.sh"
+        }
+        {
+            "label": "2. make",
+            "type": "shell",
+            "command": "./make.sh"
+        }
+        {
+            "label": "3. flash (no debug)",
+            "type": "shell",
+            "command": "./flash-app.sh"
+        }
+        {
+            "label": "4. flash (with debug)",
+            "type": "shell",
+            "command": "./flash-app-semi.sh"
+        }
+    ]
+}
