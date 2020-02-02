@@ -20,6 +20,8 @@
 // https://infocenter.nordicsemi.com/pdf/nRF52832_OPS_v0.6.3.pdf
 
 int main_butt=0;
+long long int buttonPressTime;
+long long int timeNow;
 
 char main_text[32*16];
 struct shader_font main_lines[16];
@@ -50,8 +52,8 @@ int main_state_call(int mode)
 				break;
 			}
 		break;
-		case 1: return main_test(mode);
-		case 2: return main_clock1(mode);
+		case 1: return main_clock1(mode);
+		case 2: return main_test(mode);
 	}
 	return 0;
 }
@@ -67,13 +69,23 @@ int main(void)
 	lcd_setup();
 	clock_setup();
 	button_setup();
-	
+
 	while(1)
 	{
+		timeNow = clock_time();
 		main_butt = button_read();
+
 		if( main_butt & 2 ) // pressed down
 		{
 			main_state_next=main_state+1;
+			buttonPressTime = clock_time();
+		}
+
+		if(timeNow > buttonPressTime + 655360) // display off after 10 seconds
+		{
+			main_state=0;
+			main_state_next=0;
+			main_state_call(1); // setup new state
 		}
 
 		if(main_state_next) // flag a state change 
