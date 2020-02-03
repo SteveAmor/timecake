@@ -12,6 +12,7 @@
 #define BUTTON_PIN_OUT 15
 
 int button_state=0;
+static int touch_state=0;
 
 int button_setup(void)
 {
@@ -21,8 +22,8 @@ int button_setup(void)
 
 
 	NVIC_EnableIRQ(GPIOTE_IRQn);
-	NRF_GPIOTE->INTENSET = GPIOTE_INTENSET_IN0_Msk;
-	NRF_GPIOTE->CONFIG[0] =
+	NRF_GPIOTE->INTENSET = GPIOTE_INTENSET_IN1_Msk;
+	NRF_GPIOTE->CONFIG[1] =
 		(GPIOTE_CONFIG_POLARITY_Toggle << GPIOTE_CONFIG_POLARITY_Pos)	|
 		(BUTTON_PIN_IN << GPIOTE_CONFIG_PSEL_Pos)						|
 		(GPIOTE_CONFIG_MODE_Event << GPIOTE_CONFIG_MODE_Pos)			;
@@ -38,13 +39,26 @@ int button_read(void)
 	return b;
 }
 
+int touch(void)
+{
+	int b=touch_state;
+	touch_state = 0; // clear state change flag ( very small chance to miss a touch press here :( )
+	return b;
+}
+
 static long long int debounce=0;
 
 void GPIOTE_IRQHandler(void)
 {
-	if(NRF_GPIOTE->EVENTS_IN[0]) // toggle
+	if(NRF_GPIOTE->EVENTS_IN[0])
 	{
 		NRF_GPIOTE->EVENTS_IN[0] = 0;
+		touch_state=1;
+	}
+
+	if(NRF_GPIOTE->EVENTS_IN[1]) // toggle
+	{
+		NRF_GPIOTE->EVENTS_IN[1] = 0;
 
 		// this might be unsafe?
 		int b=nrf_gpio_pin_read(BUTTON_PIN_IN);

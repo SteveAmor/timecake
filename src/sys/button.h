@@ -10,3 +10,4 @@ extern int button_state; // you may peek
 extern int button_setup(void);
 
 int button_read(void);
+int touch(void);

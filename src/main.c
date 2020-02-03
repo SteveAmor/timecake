@@ -20,6 +20,7 @@
 // https://infocenter.nordicsemi.com/pdf/nRF52832_OPS_v0.6.3.pdf
 
 int main_butt=0;
+int touch_screen = 0;
 long long int buttonPressTime;
 long long int timeNow;
 
@@ -74,8 +75,15 @@ int main(void)
 	{
 		timeNow = clock_time();
 		main_butt = button_read();
+		touch_screen = touch();
 
 		if( main_butt & 2 ) // pressed down
+		{
+			main_state_next=main_state+1;
+			buttonPressTime = clock_time();
+		}
+
+		if( touch_screen ) // screen touched
 		{
 			main_state_next=main_state+1;
 			buttonPressTime = clock_time();
