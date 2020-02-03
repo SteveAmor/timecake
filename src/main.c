@@ -9,6 +9,7 @@
 #include "sys/lcd.h"
 #include "sys/clock.h"
 #include "sys/button.h"
+#include "sys/irq_pine.h"
 
 #include "nrf.h"
 #include "nrf_gpio.h"
@@ -20,7 +21,7 @@
 // https://infocenter.nordicsemi.com/pdf/nRF52832_OPS_v0.6.3.pdf
 
 int main_butt=0;
-int touch_screen = 0;
+int touch = 0;
 long long int buttonPressTime;
 long long int timeNow;
 
@@ -75,7 +76,7 @@ int main(void)
 	{
 		timeNow = clock_time();
 		main_butt = button_read();
-		touch_screen = touch();
+		touch = touch_screen();
 
 		if( main_butt & 2 ) // pressed down
 		{
@@ -83,7 +84,7 @@ int main(void)
 			buttonPressTime = clock_time();
 		}
 
-		if( touch_screen ) // screen touched
+		if( touch ) // screen touched
 		{
 			main_state_next=main_state+1;
 			buttonPressTime = clock_time();

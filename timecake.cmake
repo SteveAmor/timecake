@@ -39,7 +39,7 @@ list(APPEND SOURCE_FILES
   src/sys/heart_pine.c
   src/sys/touch_pine.c
   src/sys/button_pine.c
-
+  src/sys/irq_pine.c
 )
 
 list(APPEND SOURCE_FILES
