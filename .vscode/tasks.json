@@ -9,19 +9,19 @@
             "command": "./cmake.sh"
         }
         {
-            "label": "2. make",
+            "label": "2. cmake with semihosting",
+            "type": "shell",
+            "command": "./cmake.sh -D SEMIHOSTING=ON"
+        }        
+        {
+            "label": "3. make",
             "type": "shell",
             "command": "./make.sh"
         }
         {
-            "label": "3. flash (no debug)",
+            "label": "4. flash",
             "type": "shell",
             "command": "./flash-app.sh"
-        }
-        {
-            "label": "4. flash (with debug)",
-            "type": "shell",
-            "command": "./flash-app-semi.sh"
         }
     ]
 }
