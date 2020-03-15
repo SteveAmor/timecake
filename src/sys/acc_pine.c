@@ -13,7 +13,6 @@ static unsigned char acc_data[128];
 
 int acc_setup(void)
 {
-	i2c_setup(); // this will may called multiple times
 	
 	return 0;
 }

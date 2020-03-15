@@ -40,6 +40,7 @@ list(APPEND SOURCE_FILES
   src/sys/touch_pine.c
   src/sys/button_pine.c
   src/sys/irq_pine.c
+  src/sys/spi_pine.c
 )
 
 list(APPEND SOURCE_FILES

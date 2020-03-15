@@ -17,7 +17,6 @@ static unsigned char touch_data[128];
 
 int touch_setup(void)
 {
-	i2c_setup(); // this will may called multiple times
 
 	nrf_gpio_cfg_output(TOUCH_PIN_RESET);
 

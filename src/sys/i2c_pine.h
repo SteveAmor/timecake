@@ -1,6 +1,7 @@
 
 
 extern int i2c_setup(void);
+extern int i2c_disable(void);
 
 extern void i2c_write(int device,int length,uint8_t *data);
 

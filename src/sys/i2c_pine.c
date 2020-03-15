@@ -26,6 +26,16 @@ int i2c_setup(void)
 	return 0;
 }
 
+int i2c_disable(void)
+{
+	NRF_TWIM1->ENABLE = 0;
+    *(volatile uint32_t *)0x40004FFC = 0;
+	*(volatile uint32_t *)0x40004FFC;
+	*(volatile uint32_t *)0x40004FFC = 1;
+
+	return 0;
+}
+
 
 void i2c_write(int device,int length,uint8_t *data)
 {

@@ -10,6 +10,7 @@
 #include "sys/clock.h"
 #include "sys/button.h"
 #include "sys/irq_pine.h"
+#include "sys/i2c_pine.h"
 
 #include "nrf.h"
 #include "nrf_gpio.h"
@@ -24,6 +25,7 @@ int main_butt=0;
 int touch = 0;
 long long int buttonPressTime;
 long long int timeNow;
+bool isAwake = true;
 
 char main_text[32*16];
 struct shader_font main_lines[16];
@@ -41,7 +43,8 @@ int main_state_call(int mode)
 			{
 				case 1: // setup, screen off
 					lcd_backlight(0);
-					lcd_sleep(255);
+					lcd_sleep(255); // go to sleep
+					isAwake = false;
 				break;
 				case 2: // sleepy update
 					__SEV();
@@ -49,8 +52,9 @@ int main_state_call(int mode)
 					__WFE();
 				break;
 				case 3: // clean, screen on
-					lcd_sleep(0);
+					lcd_sleep(0); // wake up
 					lcd_backlight(0);
+					isAwake = true;
 				break;
 			}
 		break;
@@ -64,6 +68,7 @@ int main(void)
 {
 	saveram_setup();
 
+//	i2c_setup();
 	acc_setup();
 	heart_setup();
 	touch_setup();
@@ -71,6 +76,8 @@ int main(void)
 	lcd_setup();
 	clock_setup();
 	button_setup();
+
+	buttonPressTime = clock_time();
 
 	while(1)
 	{
@@ -90,7 +97,7 @@ int main(void)
 			buttonPressTime = clock_time();
 		}
 
-		if(timeNow > buttonPressTime + 655360) // display off after 10 seconds
+		if((timeNow > buttonPressTime + 655360) & isAwake) // display off after 10 seconds
 		{
 			main_state=0;
 			main_state_next=0;
@@ -109,7 +116,6 @@ int main(void)
 			main_state_call(1); // setup new state
 		}
 
-		
 		main_state_call(2); // update current state
 
 	}

@@ -12,7 +12,6 @@ static unsigned char heart_data[128];
 
 int heart_setup(void)
 {
-	i2c_setup(); // this will may called multiple times
 	
 	return 0;
 }

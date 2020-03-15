@@ -166,6 +166,7 @@ static int main_update()
 	snprintf(main_lines[idx++].text,32,"Clock %u . %04x", (unsigned int)t,(int)(t16&0xffff));
 
 	snprintf(main_lines[idx++].text,32,"Butt %d", main_butt );
+	snprintf(main_lines[idx++].text,32,"Debug Port Enabled : %3s", DWT->CYCCNT?"NO":"YES" );
 
 /*
 	int ai=0;
